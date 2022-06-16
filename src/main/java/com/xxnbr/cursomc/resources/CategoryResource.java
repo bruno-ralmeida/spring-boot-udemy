@@ -1,6 +1,12 @@
 package com.xxnbr.cursomc.resources;
 
 import com.xxnbr.cursomc.domain.Category;
+import com.xxnbr.cursomc.services.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,22 +18,16 @@ import java.util.List;
 @RequestMapping(value = "categories")
 public class CategoryResource {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Category> list() {
+    @Autowired
+    private CategoryService categoryService;
 
-        Category category01 = Category.builder()
-                .id(1)
-                .name("Xxnbr")
-                .build();
-        Category category02 = Category.builder()
-                .id(2)
-                .name("peta-poco")
-                .build();
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public ResponseEntity<?> find(@PathVariable Integer id) {
 
-        List<Category> list = new ArrayList<>();
-        list.add(category01);
-        list.add(category02);
+        Category category = categoryService.fetchDataById(id);
 
-        return list;
+        if(category == null) return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok().body(category);
     }
 }
