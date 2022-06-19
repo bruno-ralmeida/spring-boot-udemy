@@ -2,6 +2,7 @@ package com.xxnbr.cursomc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -26,16 +27,12 @@ public class SwaggerConfig {
     }
 
     private ApiInfo metaInfo(){
-        ApiInfo apiInfo = new ApiInfo(
-                "Curso Udemy Spring-boot",
-                "Curso Spring Boot, Hibernate, REST, Ionic, JWT, S3, MySQL, MongoDB",
-                "1.0",
-                "Terms of Service",
-                new Contact("Bruno Almeida", "xxnbr.com.br", "bruno-ralmeida@outlook.com"),
-                "-",
-                "-",
-                new ArrayList<VendorExtension>()
-        );
-        return apiInfo;
+        return new ApiInfoBuilder()
+                .title("Curso Udemy Spring-boot")
+                .description("Curso Spring Boot, Hibernate, REST, Ionic, JWT, S3, MySQL, MongoDB")
+                .version("1.0")
+                .termsOfServiceUrl("Terms of Service")
+                .contact(new Contact("Bruno Almeida", "xxnbr.com.br", "bruno-ralmeida@outlook.com"))
+                .build();
     }
 }
