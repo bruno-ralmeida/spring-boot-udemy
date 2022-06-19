@@ -21,8 +21,6 @@ public class CategoryResource {
 
         Category category = categoryService.fetchDataById(id);
 
-        if(category == null) return ResponseEntity.noContent().build();
-
         return ResponseEntity.ok().body(category);
     }
 }
