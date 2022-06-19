@@ -1,9 +1,13 @@
 package com.xxnbr.cursomc;
 
 import com.xxnbr.cursomc.domain.Category;
+import com.xxnbr.cursomc.domain.City;
 import com.xxnbr.cursomc.domain.Product;
+import com.xxnbr.cursomc.domain.State;
 import com.xxnbr.cursomc.repositories.CategoryRepository;
+import com.xxnbr.cursomc.repositories.CityRepository;
 import com.xxnbr.cursomc.repositories.ProductRepository;
+import com.xxnbr.cursomc.repositories.StateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +26,10 @@ public class CursomcApplication implements CommandLineRunner {
 
 	private final ProductRepository productRepository;
 
+	private final StateRepository stateRepository;
+
+	private final CityRepository cityRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -29,6 +37,12 @@ public class CursomcApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+		createProductsAndCategories();
+
+		createStatesAndCities();
+
+	}
+	private void createProductsAndCategories() {
 		Product mouse = Product
 				.builder()
 				.id(null)
@@ -62,16 +76,52 @@ public class CursomcApplication implements CommandLineRunner {
 				.builder()
 				.id(null)
 				.name("Escritório")
-				.products(Arrays.asList(mouse,teclado))
+				.products(Arrays.asList(mouse, teclado))
 				.build();
 
 
-		mouse.getCategories().addAll(Arrays.asList(informatica,escritorio));
-		teclado.getCategories().addAll(Arrays.asList(informatica,escritorio));
+		mouse.getCategories().addAll(Arrays.asList(informatica, escritorio));
+		teclado.getCategories().addAll(Arrays.asList(informatica, escritorio));
 		impressora.getCategories().addAll(Arrays.asList(informatica));
 
 
 		categoryRepository.saveAll(Arrays.asList(informatica, escritorio));
 		productRepository.saveAll(Arrays.asList(mouse, teclado, impressora));
+	}
+
+	private void createStatesAndCities() {
+		State saoPaulo = State
+				.builder()
+				.name("São Paulo")
+				.build();
+
+		State minasGerais = State
+				.builder()
+				.name("Minas Gerais")
+				.build();
+
+		City santoAndre = City
+				.builder()
+				.name("Santo André")
+				.state(saoPaulo)
+				.build();
+
+		City campinas = City
+				.builder()
+				.name("Campinas")
+				.state(saoPaulo)
+				.build();
+
+		City uberlandia = City
+				.builder()
+				.name("Uberlândia")
+				.state(minasGerais)
+				.build();
+
+		saoPaulo.getCities().addAll(Arrays.asList(santoAndre, campinas));
+		minasGerais.getCities().addAll(Arrays.asList(uberlandia));
+
+		stateRepository.saveAll(Arrays.asList(saoPaulo, minasGerais));
+		cityRepository.saveAll(Arrays.asList(santoAndre, campinas, uberlandia));
 	}
 }
