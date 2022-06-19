@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category implements Serializable {
+public class Product implements Serializable {
 
     private static long serialVersionUID = 1L;
 
@@ -27,8 +28,17 @@ public class Category implements Serializable {
     private String name;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "categories")
+    private BigDecimal price;
+
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "PRODUCT_CATEGORY",
+            joinColumns = @JoinColumn(name = "PRODUCT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID")
+    )
     @Builder.Default
     @ToString.Exclude
-    private List<Product> products = new ArrayList<>(0);
+    private List<Category> categories = new ArrayList<>(0);
+
 }
