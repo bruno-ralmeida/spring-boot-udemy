@@ -2,16 +2,16 @@ package com.xxnbr.cursomc.services;
 
 import com.xxnbr.cursomc.domain.Category;
 import com.xxnbr.cursomc.repositories.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository repository;
+    private final CategoryRepository repository;
 
     public Category fetchDataById(Integer id){
 
