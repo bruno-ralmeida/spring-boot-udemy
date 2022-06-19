@@ -16,11 +16,11 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> objectNotFoundException(ObjectNotFoundException exception, HttpServletRequest request){
         StandardError error = StandardError
                 .builder()
-                .status(HttpStatus.OK.value())
+                .status(HttpStatus.NOT_FOUND.value())
                 .message(exception.getMessage())
                 .timestamp(System.currentTimeMillis())
                 .build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(error);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }
