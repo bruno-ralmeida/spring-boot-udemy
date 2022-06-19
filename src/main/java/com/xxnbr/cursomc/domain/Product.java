@@ -1,5 +1,6 @@
 package com.xxnbr.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,6 +40,7 @@ public class Product implements Serializable {
     )
     @Builder.Default
     @ToString.Exclude
+    @JsonBackReference
     private List<Category> categories = new ArrayList<>(0);
 
 }

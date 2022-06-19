@@ -1,5 +1,6 @@
 package com.xxnbr.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,5 +31,6 @@ public class Category implements Serializable {
     @ManyToMany(mappedBy = "categories")
     @Builder.Default
     @ToString.Exclude
+    @JsonManagedReference
     private List<Product> products = new ArrayList<>(0);
 }
