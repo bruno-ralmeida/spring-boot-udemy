@@ -10,7 +10,11 @@ import java.io.Serializable;
 
 @Entity
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category implements Serializable {
@@ -23,4 +27,5 @@ public class Category implements Serializable {
 
     @EqualsAndHashCode.Exclude
     private String name;
+
 }
