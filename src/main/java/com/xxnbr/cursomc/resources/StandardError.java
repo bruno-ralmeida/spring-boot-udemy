@@ -2,7 +2,6 @@ package com.xxnbr.cursomc.resources;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
