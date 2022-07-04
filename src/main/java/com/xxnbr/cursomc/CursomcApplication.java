@@ -35,41 +35,41 @@ public class CursomcApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 
 		createProductsAndCategories();
 
 		createStatesAndCities();
 
 	}
+
 	private void createProductsAndCategories() {
 		Product mouse = Product
 				.builder()
 				.id(null)
 				.name("Mouse")
-				.price(new BigDecimal(69.90))
+				.price(BigDecimal.valueOf(69.90))
 				.build();
 
 		Product teclado = Product
 				.builder()
 				.id(null)
 				.name("Teclado")
-				.price(new BigDecimal(80.0))
+				.price(BigDecimal.valueOf(80.0))
 				.build();
 
 		Product impressora = Product
 				.builder()
 				.id(null)
 				.name("Impressora")
-				.price(new BigDecimal(600.00))
+				.price(BigDecimal.valueOf(600.00))
 				.build();
-
 
 		Category informatica = Category
 				.builder()
 				.id(null)
 				.name("Informática")
-				.products(Arrays.asList(mouse,teclado,impressora))
+				.products(Arrays.asList(mouse, teclado, impressora))
 				.build();
 
 		Category escritorio = Category
@@ -79,11 +79,9 @@ public class CursomcApplication implements CommandLineRunner {
 				.products(Arrays.asList(mouse, teclado))
 				.build();
 
-
 		mouse.getCategories().addAll(Arrays.asList(informatica, escritorio));
 		teclado.getCategories().addAll(Arrays.asList(informatica, escritorio));
 		impressora.getCategories().addAll(Arrays.asList(informatica));
-
 
 		categoryRepository.saveAll(Arrays.asList(informatica, escritorio));
 		productRepository.saveAll(Arrays.asList(mouse, teclado, impressora));
