@@ -1,13 +1,13 @@
 package com.xxnbr.cursomc;
 
+import com.xxnbr.cursomc.domain.Address;
 import com.xxnbr.cursomc.domain.Category;
 import com.xxnbr.cursomc.domain.City;
+import com.xxnbr.cursomc.domain.Customer;
 import com.xxnbr.cursomc.domain.Product;
 import com.xxnbr.cursomc.domain.State;
-import com.xxnbr.cursomc.repositories.CategoryRepository;
-import com.xxnbr.cursomc.repositories.CityRepository;
-import com.xxnbr.cursomc.repositories.ProductRepository;
-import com.xxnbr.cursomc.repositories.StateRepository;
+import com.xxnbr.cursomc.domain.enums.CustomerType;
+import com.xxnbr.cursomc.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashSet;
 
 @EnableWebMvc
 @SpringBootApplication
@@ -30,6 +31,10 @@ public class CursomcApplication implements CommandLineRunner {
 
 	private final CityRepository cityRepository;
 
+	private final CustomerRepository customerRepository;
+
+	private final AddressRepository addressRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -39,7 +44,7 @@ public class CursomcApplication implements CommandLineRunner {
 
 		createProductsAndCategories();
 
-		createStatesAndCities();
+		createStatesAndCitiesAndCustomers();
 
 	}
 
@@ -87,7 +92,7 @@ public class CursomcApplication implements CommandLineRunner {
 		productRepository.saveAll(Arrays.asList(mouse, teclado, impressora));
 	}
 
-	private void createStatesAndCities() {
+	private void createStatesAndCitiesAndCustomers() {
 		State saoPaulo = State
 				.builder()
 				.name("São Paulo")
@@ -121,5 +126,43 @@ public class CursomcApplication implements CommandLineRunner {
 
 		stateRepository.saveAll(Arrays.asList(saoPaulo, minasGerais));
 		cityRepository.saveAll(Arrays.asList(santoAndre, campinas, uberlandia));
+
+		Customer joao = new Customer()
+				.builder()
+				.name("João")
+				.email("joao@gmail.com")
+				.cpfCnpj("191.090.630-13")
+				.phones(new HashSet<>(Arrays.asList("(11) 98765-4321", "(11) 96875-4321")))
+				.typeCode(CustomerType.PHYSICAL.getCode())
+				.build();
+
+		Address santoAndreJoao = new Address()
+				.builder()
+				.city(santoAndre)
+				.neighborhood("Vila Alto Santo Andre")
+				.street("Rua dos eucaliptos")
+				.number("576A")
+				.postalCode("09240-465")
+				.complement("-")
+				.customer(joao)
+				.build();
+
+		Address campinasJoao = new Address()
+				.builder()
+				.city(campinas)
+				.neighborhood("Batatinha")
+				.street("Rua das flores")
+				.number("51")
+				.postalCode("09800-465")
+				.complement("-")
+				.customer(joao)
+				.build();
+
+		joao.getAddresses().addAll(Arrays.asList(santoAndreJoao,campinasJoao));
+
+		customerRepository.saveAll(Arrays.asList(joao));
+		addressRepository.saveAll(Arrays.asList(santoAndreJoao, campinasJoao));
 	}
+
+
 }

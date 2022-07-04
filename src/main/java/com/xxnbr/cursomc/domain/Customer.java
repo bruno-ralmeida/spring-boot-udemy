@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.*;
+
+@Entity
 @Getter
 @Setter
 @Builder
@@ -19,6 +22,8 @@ public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String email;
@@ -28,9 +33,12 @@ public class Customer implements Serializable {
     private Integer typeCode;
 
     @Builder.Default
+    @OneToMany(mappedBy = "customer")
     private List<Address> addresses = new ArrayList<>(0);
 
     @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "phones")
     private Set<String> phones = new HashSet<>();
 
     public CustomerType getTypeCode() {

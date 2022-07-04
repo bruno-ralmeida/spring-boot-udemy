@@ -2,8 +2,11 @@ package com.xxnbr.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.*;
+
 import lombok.*;
 
+@Entity
 @Getter
 @Setter
 @Builder
@@ -14,13 +17,21 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String street;
     private String number;
     private String complement;
     private String neighborhood;
     private String postalCode;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
     private City city;
 
 }
