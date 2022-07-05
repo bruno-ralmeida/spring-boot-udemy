@@ -1,5 +1,6 @@
 package com.xxnbr.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,5 +27,6 @@ public class City implements Serializable {
     @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "STATE_ID")
+    @JsonManagedReference
     private State state;
 }

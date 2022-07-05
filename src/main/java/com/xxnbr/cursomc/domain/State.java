@@ -1,5 +1,6 @@
 package com.xxnbr.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,5 +29,6 @@ public class State implements Serializable {
     @EqualsAndHashCode.Exclude
     @Builder.Default
     @OneToMany(mappedBy = "state")
+    @JsonBackReference
     private List<City> cities = new ArrayList<>(0);
 }
