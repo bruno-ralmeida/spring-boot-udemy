@@ -127,7 +127,7 @@ public class CursomcApplication implements CommandLineRunner {
 		stateRepository.saveAll(Arrays.asList(saoPaulo, minasGerais));
 		cityRepository.saveAll(Arrays.asList(santoAndre, campinas, uberlandia));
 
-		Customer joao = new Customer()
+		Customer joao = Customer
 				.builder()
 				.name("João")
 				.email("joao@gmail.com")
@@ -136,7 +136,7 @@ public class CursomcApplication implements CommandLineRunner {
 				.typeCode(CustomerType.PHYSICAL.getCode())
 				.build();
 
-		Address santoAndreJoao = new Address()
+		Address santoAndreJoao = Address
 				.builder()
 				.city(santoAndre)
 				.neighborhood("Vila Alto Santo Andre")
@@ -147,7 +147,7 @@ public class CursomcApplication implements CommandLineRunner {
 				.customer(joao)
 				.build();
 
-		Address campinasJoao = new Address()
+		Address campinasJoao = Address
 				.builder()
 				.city(campinas)
 				.neighborhood("Batatinha")
