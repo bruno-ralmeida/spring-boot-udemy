@@ -1,12 +1,8 @@
 package com.xxnbr.cursomc;
 
-import com.xxnbr.cursomc.domain.Address;
-import com.xxnbr.cursomc.domain.Category;
-import com.xxnbr.cursomc.domain.City;
-import com.xxnbr.cursomc.domain.Customer;
-import com.xxnbr.cursomc.domain.Product;
-import com.xxnbr.cursomc.domain.State;
+import com.xxnbr.cursomc.domain.*;
 import com.xxnbr.cursomc.domain.enums.CustomerType;
+import com.xxnbr.cursomc.domain.enums.PaymentStatus;
 import com.xxnbr.cursomc.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
