@@ -5,12 +5,15 @@ import com.xxnbr.cursomc.domain.enums.CustomerType;
 import com.xxnbr.cursomc.domain.enums.PaymentStatus;
 import com.xxnbr.cursomc.repositories.*;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -31,16 +34,21 @@ public class CursomcApplication implements CommandLineRunner {
 
 	private final AddressRepository addressRepository;
 
+	private final PurchaseOrderRepository purchaseOrderRepository;
+
+	private final PaymentRepository paymentRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
 
+	@SneakyThrows
 	@Override
 	public void run(String... args) {
 
 		createProductsAndCategories();
 
-		createStatesAndCitiesAndCustomers();
+		createStatesAndCitiesAndCustomersAndPurchaseOrder();
 
 	}
 
@@ -88,7 +96,7 @@ public class CursomcApplication implements CommandLineRunner {
 		productRepository.saveAll(Arrays.asList(mouse, teclado, impressora));
 	}
 
-	private void createStatesAndCitiesAndCustomers() {
+	private void createStatesAndCitiesAndCustomersAndPurchaseOrder() throws ParseException {
 		State saoPaulo = State
 				.builder()
 				.name("São Paulo")
@@ -158,6 +166,48 @@ public class CursomcApplication implements CommandLineRunner {
 
 		customerRepository.saveAll(Arrays.asList(joao));
 		addressRepository.saveAll(Arrays.asList(santoAndreJoao, campinasJoao));
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+
+		PurchaseOrder order1 = PurchaseOrder
+				.builder()
+				.orderTime(dateFormat.parse("05/07/2022 16:02:58"))
+				.customer(joao)
+				.shippingAddress(joao.getAddresses().get(0))
+				.build();
+
+		PurchaseOrder order2 = PurchaseOrder
+				.builder()
+				.orderTime(dateFormat.parse("04/07/2022 06:22:08"))
+				.customer(joao)
+				.shippingAddress(joao.getAddresses().get(1))
+				.build();
+
+		Payment payment1 = CreditCardPayment
+				.builder()
+				.status(PaymentStatus.CONFIRMED.getCode())
+				.purchaseOrder(order1)
+				.installments(6)
+				.build();
+
+		order1.setPayment(payment1);
+
+		Payment payment2 = InvoicePayment
+				.builder()
+				.status(PaymentStatus.PENDING.getCode())
+				.purchaseOrder(order2)
+				.dueDate(dateFormat.parse("15/07/2022 23:59:59"))
+				.build();
+
+		order2.setPayment(payment2);
+
+
+		joao.getPurchaseOrderList().addAll(Arrays.asList(order1, order2));
+
+		purchaseOrderRepository.saveAll(Arrays.asList(order1, order2));
+
+		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
 	}
 
 

@@ -43,6 +43,7 @@ public class Customer implements Serializable {
     @CollectionTable(name = "phones")
     private Set<String> phones = new HashSet<>();
 
+    @OneToMany(mappedBy = "customer")
     @Builder.Default
     private List<PurchaseOrder> purchaseOrderList = new ArrayList<>(0);
 
