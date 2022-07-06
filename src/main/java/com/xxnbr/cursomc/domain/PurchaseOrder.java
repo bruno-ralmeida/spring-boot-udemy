@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Getter
@@ -32,5 +32,18 @@ public class PurchaseOrder implements Serializable {
     @ManyToOne
     @JoinColumn(name = "shipping_address_id")
     private Address shippingAddress;
+
+    @OneToMany(mappedBy = "orderedItemPK.purchaseOrder")
+    private Set<OrderedItem> items = new HashSet<>(0);
+
+    private List<Product> getProducts(){
+        List<Product> productList = new ArrayList<>(0);
+
+        for (OrderedItem orderedItem : items){
+            productList.add(orderedItem.getOrderedItemPK().getProduct());
+        }
+
+        return productList;
+    }
 
 }

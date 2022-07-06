@@ -7,7 +7,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -38,5 +40,18 @@ public class Product implements Serializable {
     @ToString.Exclude
     @JsonBackReference
     private List<Category> categories = new ArrayList<>(0);
+
+    @OneToMany(mappedBy = "orderedItemPK.product")
+    private Set<OrderedItem> items = new HashSet<>();
+
+    private List<PurchaseOrder> getPurchaseOrder(){
+        List<PurchaseOrder> purchaseOrderList = new ArrayList<>(0);
+
+        for (OrderedItem orderedItem : items){
+            purchaseOrderList.add(orderedItem.getOrderedItemPK().getPurchaseOrder());
+        }
+
+        return purchaseOrderList;
+    }
 
 }

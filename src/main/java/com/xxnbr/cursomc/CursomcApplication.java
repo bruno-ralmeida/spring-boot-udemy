@@ -38,6 +38,8 @@ public class CursomcApplication implements CommandLineRunner {
 
 	private final PaymentRepository paymentRepository;
 
+	private final OrderedItemRepository orderedItemRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -46,13 +48,13 @@ public class CursomcApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
 
-		createProductsAndCategories();
-
-		createStatesAndCitiesAndCustomersAndPurchaseOrder();
+		createStatesAndCitiesAndCustomersAndPurchaseOrderAndProductsAndCategories();
 
 	}
 
-	private void createProductsAndCategories() {
+
+	private void createStatesAndCitiesAndCustomersAndPurchaseOrderAndProductsAndCategories() throws ParseException {
+
 		Product mouse = Product
 				.builder()
 				.id(null)
@@ -94,9 +96,7 @@ public class CursomcApplication implements CommandLineRunner {
 
 		categoryRepository.saveAll(Arrays.asList(informatica, escritorio));
 		productRepository.saveAll(Arrays.asList(mouse, teclado, impressora));
-	}
 
-	private void createStatesAndCitiesAndCustomersAndPurchaseOrder() throws ParseException {
 		State saoPaulo = State
 				.builder()
 				.name("São Paulo")
@@ -208,6 +208,31 @@ public class CursomcApplication implements CommandLineRunner {
 		purchaseOrderRepository.saveAll(Arrays.asList(order1, order2));
 
 		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
+
+
+		OrderedItem orderedItem1 = OrderedItem
+				.builder()
+				.orderedItemPK(new OrderedItemPK(order1, mouse))
+				.discount(0D)
+				.quantity(1)
+				.price(150D)
+				.build();
+
+		OrderedItem orderedItem2 = OrderedItem
+				.builder()
+				.orderedItemPK(new OrderedItemPK(order2, impressora))
+				.discount(0D)
+				.quantity(1)
+				.price(5000D)
+				.build();
+
+		order1.setItems(new HashSet<>(Arrays.asList(orderedItem1)));
+		order2.setItems(new HashSet<>(Arrays.asList(orderedItem2)));
+
+		mouse.setItems(new HashSet<>(Arrays.asList(orderedItem1)));
+		impressora.setItems(new HashSet<>(Arrays.asList(orderedItem2)));
+
+		orderedItemRepository.saveAll(Arrays.asList(orderedItem1, orderedItem2));
 	}
 
 
